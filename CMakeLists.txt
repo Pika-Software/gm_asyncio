@@ -34,6 +34,6 @@ if(NOT GARRYSMOD_COMMON_FOUND) # Check if garrysmod_common has been found
     message(FATAL_ERROR "garrysmod_common not found")
 endif()
 
-project(gm_async_io VERSION 1.0.0 LANGUAGES CXX)
+project(gm_asyncio VERSION 1.0.0 LANGUAGES CXX)
 
 add_subdirectory(source)

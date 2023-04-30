@@ -182,13 +182,13 @@ GMOD_MODULE_OPEN() {
 
     // Initialize think hook
     AsyncIO::LuaUtils::FindValue(LUA, "timer.Create");
-    LUA->PushString("__ASYNC_IO_THINK");
+    LUA->PushString("__ASYNCIO_THINK");
     LUA->PushNumber(0);
     LUA->PushNumber(0);
     LUA->PushCFunction(Lua::Think);
     AsyncIO::LuaUtils::RunFunction(LUA, 4, 0);
 
-    LUA->GetField(GarrysMod::Lua::INDEX_GLOBAL, "async_io");
+    LUA->GetField(GarrysMod::Lua::INDEX_GLOBAL, "asyncio");
     if (!LUA->IsType(-1, GarrysMod::Lua::Type::Table)) {
         LUA->Pop();
         LUA->CreateTable();
@@ -201,7 +201,7 @@ GMOD_MODULE_OPEN() {
 
         LUA->PushCFunction(Lua::AsyncRead);
         LUA->SetField(-2, "AsyncRead");
-    LUA->SetField(GarrysMod::Lua::INDEX_GLOBAL, "async_io");
+    LUA->SetField(GarrysMod::Lua::INDEX_GLOBAL, "asyncio");
 
     return 0;
 }

@@ -1,2 +1,2 @@
-# gm_async_io
+# gm_asyncio
 Make your Garry's Mod I/O asynchronous!

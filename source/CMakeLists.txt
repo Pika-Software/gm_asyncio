@@ -2,8 +2,8 @@
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_CURRENT_LIST_DIR} *.cpp *.hpp)
 source_group(TREE ${CMAKE_CURRENT_LIST_DIR} PREFIX "Sources" FILES ${SOURCES})
 
-add_library(async_io SHARED ${SOURCES})
-target_link_libraries(async_io PUBLIC 
+add_library(asyncio SHARED ${SOURCES})
+target_link_libraries(asyncio PUBLIC 
     gmod::common
     gmod::helpers_extended
     sourcesdk::common
@@ -11,12 +11,12 @@ target_link_libraries(async_io PUBLIC
     sourcesdk::tier1
 )
 
-target_include_directories(async_io PRIVATE ${CMAKE_CURRENT_LIST_DIR})
+target_include_directories(asyncio PRIVATE ${CMAKE_CURRENT_LIST_DIR})
 
-set_gmod_suffix_prefix(async_io)
+set_gmod_suffix_prefix(asyncio)
 
 # Autoinstall
 set(AUTOINSTALL "" CACHE PATH "Autoinstall path")
 if(IS_DIRECTORY ${AUTOINSTALL})
-    autoinstall(async_io ${AUTOINSTALL})
+    autoinstall(asyncio ${AUTOINSTALL})
 endif()
