@@ -23,7 +23,14 @@ namespace AsyncIO {
     }
 
     bool FixFileName(std::string& fileName) {
-        // TODO: Fix filename here
+        // Fix backslashes to normal slashes
+        V_FixSlashes(&fileName[0], '/');
+
+        // Remove double slashes from the path
+        V_FixDoubleSlashes(&fileName[0]);
+        
+        // Remove ./ and ../ from path, and return true if path valid (invalid if path goes past the root dir)
+        return V_RemoveDotSlashes(&fileName[0], '/');
     }
 }
 
