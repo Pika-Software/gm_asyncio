@@ -1,5 +1,6 @@
 #include "lua_utils.hpp"
 #include "async_task.hpp"
+#include "path_utils.hpp"
 
 #include <GarrysMod/Lua/Interface.h>
 #include <GarrysMod/InterfacePointers.hpp>
@@ -21,17 +22,6 @@ namespace AsyncIO {
 
         Tasks.push_back(std::move(task));
     }
-
-    bool FixFileName(std::string& fileName) {
-        // Fix backslashes to normal slashes
-        V_FixSlashes(&fileName[0], '/');
-
-        // Remove double slashes from the path
-        V_FixDoubleSlashes(&fileName[0]);
-        
-        // Remove ./ and ../ from path, and return true if path valid (invalid if path goes past the root dir)
-        return V_RemoveDotSlashes(&fileName[0], '/');
-    }
 }
 
 namespace Lua {
@@ -49,11 +39,13 @@ namespace Lua {
             auto write_task = std::dynamic_pointer_cast<AsyncWriteTask>(task);
             auto read_task = std::dynamic_pointer_cast<AsyncReadTask>(task);
 
-            std::string fileName = task->fileName.substr(5);
+            // Remove data/ from out path
+            if (write_task)
+                task->fileName = task->fileName.substr(5);
 
             if (task->callbackRef != 0) {
                 LUA->ReferencePush(task->callbackRef);
-                LUA->PushString(fileName.c_str());
+                LUA->PushString(task->fileName.c_str());
                 LUA->PushString(task->gamePath.c_str());
                 if (write_task) {
                     LUA->PushNumber(status);
@@ -93,7 +85,11 @@ namespace Lua {
         std::string fileName = LUA->CheckString(1);
         LUA->CheckString(2);
 
-        // Fix fileName here
+        if (!PathUtils::FixPath(fileName) || !PathUtils::HasWhitelistedExtension(fileName)) {
+            LUA->PushNumber(FSASYNC_ERR_FILEOPEN);
+            return 1;
+        }
+
         fileName.insert(0, "data/");
 
         unsigned int contentLen;
@@ -121,23 +117,27 @@ namespace Lua {
         std::string fileName = LUA->CheckString(1);
         LUA->CheckString(2);
 
-        // Fix fileName here
+        if (!PathUtils::FixPath(fileName) || !PathUtils::HasWhitelistedExtension(fileName)) {
+            LUA->PushNumber(FSASYNC_ERR_FILEOPEN);
+            return 1;
+        }
+
+        fileName.insert(0, "data/");
 
         unsigned int contentLen;
         const char* content = LUA->GetString(2, &contentLen);
 
         auto task = std::make_shared<AsyncWriteTask>(fileName);
-
-        LUA->Push(2);
-        task->dataRef = LUA->ReferenceCreate();
-
-        if (LUA->IsType(3, GarrysMod::Lua::Type::Function)) {
-            LUA->Push(3);
-            task->callbackRef = LUA->ReferenceCreate();
-        }
-
-        auto status = g_pFullFileSystem->AsyncAppend(fileName.c_str(), content, contentLen, false, &task->handle);
+        auto status = g_pFullFileSystem->AsyncWrite(task->fileName.c_str(), content, contentLen, false, true, &task->handle);
         if (status == FSASYNC_OK) {
+            LUA->Push(2);
+            task->dataRef = LUA->ReferenceCreate();
+
+            if (LUA->IsType(3, GarrysMod::Lua::Type::Function)) {
+                LUA->Push(3);
+                task->callbackRef = LUA->ReferenceCreate();
+            }
+
             AddTask(std::move(task));
         }
 
@@ -149,7 +149,10 @@ namespace Lua {
         std::string fileName = LUA->CheckString(1);
         std::string gamePath = LUA->CheckString(2);
 
-        // Fix fileName here
+        if (!PathUtils::FixPath(fileName)) {
+            LUA->PushNumber(FSASYNC_ERR_FILEOPEN);
+            return 1;
+        }
 
         auto task = std::make_shared<AsyncReadTask>(fileName, gamePath);
         if (LUA->IsType(3, GarrysMod::Lua::Type::Function)) {
