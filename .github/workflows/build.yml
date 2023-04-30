@@ -56,19 +56,19 @@ jobs:
 
       - name: '[x64] Configure project (Serverside)'
         run: |
-          cmake -B build -S . -A x64 `
+          cmake -B build64 -S . -A x64 `
             -DGARRYSMOD_COMMON_PATH="third-party/garrysmod_common64" `
             -DAUTOINSTALL="." `
             -DBUILD_SHARED_LIBS=OFF
 
       - name: '[x64] Build project (Serverside)'
-        run: cmake --build build --config Release -j
+        run: cmake --build build64 --config Release -j
 
       - name: '[x64] Configure project (Clientside)'
-        run: cmake -B build -S . -DCLIENT_DLL=ON
+        run: cmake -B build64 -S . -DCLIENT_DLL=ON
 
       - name: '[x64] Build project (Clientside)'
-        run: cmake --build build --config Release -j
+        run: cmake --build build64 --config Release -j
 
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v3
