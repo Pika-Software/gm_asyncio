@@ -207,5 +207,18 @@ GMOD_MODULE_OPEN() {
 }
 
 GMOD_MODULE_CLOSE() {
+    for (int tryNum = 0;; tryNum++) {
+        for (const auto& task : AsyncIO::Tasks) {
+            g_pFullFileSystem->AsyncFinish(task->handle);
+        }
+
+        Lua::Think(LUA->GetState());
+
+        if (tryNum == 10) {
+            Warning("AsyncIO: Tried synchronously to finish all async IO operations, but there are still %d task pending. Ignoring them.", AsyncIO::Tasks.size());
+            break;
+        }
+    }
+
     return 0;
 }
