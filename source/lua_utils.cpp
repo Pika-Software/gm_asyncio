@@ -7,9 +7,10 @@ namespace AsyncIO::LuaUtils {
         do {
             firstPos = endPos;
             endPos = path.find(".", endPos) + 1;
-            std::string name{ path.substr(firstPos, endPos != 0 ? endPos - firstPos - 1 : path.size()) };
+            std::string_view name = path.substr(firstPos, endPos != 0 ? endPos - firstPos - 1 : path.size());
+            std::string name_copy {name.data(), name.size()};
 
-            LUA->GetField(firstPos == 0 ? GarrysMod::Lua::INDEX_GLOBAL : -1, name.c_str());
+            LUA->GetField(firstPos == 0 ? GarrysMod::Lua::INDEX_GLOBAL : -1, name_copy.c_str());
             if (firstPos != 0) LUA->Remove(-2);
             if (!LUA->IsType(-1, GarrysMod::Lua::Type::Table)) break;
         } while (endPos != 0);
