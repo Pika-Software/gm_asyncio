@@ -38,13 +38,13 @@ jobs:
             -DBUILD_SHARED_LIBS=OFF
 
       - name: '[x32] Build project (Serverside)'
-        run: cmake --build build --config Release -j
+        run: cmake --build build --config Release -j -t asyncio
 
       - name: '[x32] Configure project (Clientside)'
         run: cmake -B build -S . -DCLIENT_DLL=ON
 
       - name: '[x32] Build project (Clientside)'
-        run: cmake --build build --config Release -j
+        run: cmake --build build --config Release -j -t asyncio
 
       - name: '[x64] Download garrysmod_common'
         uses: actions/checkout@v3
@@ -62,13 +62,13 @@ jobs:
             -DBUILD_SHARED_LIBS=OFF
 
       - name: '[x64] Build project (Serverside)'
-        run: cmake --build build64 --config Release -j
+        run: cmake --build build64 --config Release -j -t asyncio
 
       - name: '[x64] Configure project (Clientside)'
         run: cmake -B build64 -S . -DCLIENT_DLL=ON
 
       - name: '[x64] Build project (Clientside)'
-        run: cmake --build build64 --config Release -j
+        run: cmake --build build64 --config Release -j -t asyncio
 
       - name: "Upload artifacts"
         uses: actions/upload-artifact@v3
