@@ -11,6 +11,9 @@ namespace AsyncIO::LuaUtils {
 
     // Runs a function with given arguments on the stack. If function is nil, then just pushes nils as results and pops everything else
     int RunFunction(GarrysMod::Lua::ILuaBase* LUA, int args, int results);
+
+    // Converts LUA gamepath to filesystem gamepath
+    const char* GetGamePath(GarrysMod::Lua::ILuaBase* LUA, const char* gamePath);
 }
 
 #endif // ASYNCIO_LUAQUICKS

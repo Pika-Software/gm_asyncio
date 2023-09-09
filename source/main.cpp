@@ -62,8 +62,7 @@ namespace Lua {
                     LuaUtils::RunFunction(LUA, 4, 0);
 
                     MemAlloc_Free(data);
-                }
-                else {
+                } else {
                     LUA->PushNumber(FSASYNC_ERR_NOT_MINE);
                     LuaUtils::RunFunction(LUA, 3, 0);
                 }
@@ -147,14 +146,14 @@ namespace Lua {
 
     LUA_FUNCTION(AsyncRead) {
         std::string fileName = LUA->CheckString(1);
-        std::string gamePath = LUA->CheckString(2);
+        const char* gamePath = LUA->CheckString(2);
 
         if (!PathUtils::FixPath(fileName)) {
             LUA->PushNumber(FSASYNC_ERR_FILEOPEN);
             return 1;
         }
 
-        auto task = std::make_shared<AsyncReadTask>(fileName, gamePath);
+        auto task = std::make_shared<AsyncReadTask>(fileName, LuaUtils::GetGamePath(LUA, gamePath));
         if (LUA->IsType(3, GarrysMod::Lua::Type::Function)) {
             LUA->Push(3);
             task->callbackRef = LUA->ReferenceCreate();
@@ -193,14 +192,14 @@ GMOD_MODULE_OPEN() {
         LUA->Pop();
         LUA->CreateTable();
     }
-        LUA->PushCFunction(Lua::AsyncAppend);
-        LUA->SetField(-2, "AsyncAppend");
+    LUA->PushCFunction(Lua::AsyncAppend);
+    LUA->SetField(-2, "AsyncAppend");
 
-        LUA->PushCFunction(Lua::AsyncWrite);
-        LUA->SetField(-2, "AsyncWrite");
+    LUA->PushCFunction(Lua::AsyncWrite);
+    LUA->SetField(-2, "AsyncWrite");
 
-        LUA->PushCFunction(Lua::AsyncRead);
-        LUA->SetField(-2, "AsyncRead");
+    LUA->PushCFunction(Lua::AsyncRead);
+    LUA->SetField(-2, "AsyncRead");
     LUA->SetField(GarrysMod::Lua::INDEX_GLOBAL, "asyncio");
 
     return 0;

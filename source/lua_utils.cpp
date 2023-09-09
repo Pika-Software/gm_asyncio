@@ -1,6 +1,7 @@
 #include "lua_utils.hpp"
 #include <string>
 #include <string_view>
+#include <GarrysMod/Lua/LuaInterface.h>
 
 namespace AsyncIO::LuaUtils {
     void FindValue(GarrysMod::Lua::ILuaBase* LUA, std::string_view path) {
@@ -9,7 +10,7 @@ namespace AsyncIO::LuaUtils {
         do {
             firstPos = endPos;
             endPos = path.find(".", endPos) + 1;
-            std::string name{ path.substr(firstPos, endPos != 0 ? endPos - firstPos - 1 : path.size()) };
+            std::string name{path.substr(firstPos, endPos != 0 ? endPos - firstPos - 1 : path.size())};
 
             LUA->GetField(firstPos == 0 ? GarrysMod::Lua::INDEX_GLOBAL : -1, name.c_str());
             if (firstPos != 0) LUA->Remove(-2);
@@ -28,5 +29,10 @@ namespace AsyncIO::LuaUtils {
         if (LUA->PCall(args, results, -2 - args) != 0) { LUA->Pop(); };
         LUA->Remove(-1 - results);
         return 0;
+    }
+
+    const char* GetGamePath(GarrysMod::Lua::ILuaBase* LUA, const char* gamePath) {
+        if (strcmp(gamePath, "LUA") == 0) return reinterpret_cast<GarrysMod::Lua::ILuaInterface*>(LUA)->GetPathID();
+        return gamePath;
     }
 }
