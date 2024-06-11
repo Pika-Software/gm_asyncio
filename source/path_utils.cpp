@@ -8,7 +8,8 @@ namespace AsyncIO::PathUtils {
     const std::array ExtensionWhitelist {
         "txt", "dat", "json", "xml", "csv",
         "jpg", "jpeg", "png", "vtf", "vmt",
-        "mp3", "wav", "ogg"
+        "mp3", "wav", "ogg", "vcd", "dem",
+        "gma"
     };
 
     template<class T>
