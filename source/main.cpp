@@ -207,6 +207,9 @@ GMOD_MODULE_OPEN() {
 
 GMOD_MODULE_CLOSE() {
     for (int tryNum = 0;; tryNum++) {
+        if (AsyncIO::Tasks.empty())
+            break;
+
         for (const auto& task : AsyncIO::Tasks) {
             g_pFullFileSystem->AsyncFinish(task->handle);
         }
