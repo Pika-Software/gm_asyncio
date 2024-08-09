@@ -9,7 +9,8 @@ namespace AsyncIO::PathUtils {
         "txt", "dat", "json", "xml", "csv",
         "jpg", "jpeg", "png", "vtf", "vmt",
         "mp3", "wav", "ogg", "vcd", "dem",
-        "gma"
+        "gma", "mdl", "phy", "vvd", "vtx",
+        "ani"
     };
 
     template<class T>
