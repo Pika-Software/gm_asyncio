@@ -217,7 +217,7 @@ GMOD_MODULE_CLOSE() {
         Lua::Think(LUA->GetState());
 
         if (tryNum == 10) {
-            Warning("AsyncIO: Tried synchronously to finish all async IO operations, but there are still %d task pending. Ignoring them.", AsyncIO::Tasks.size());
+            Warning("AsyncIO: Tried synchronously to finish all async IO operations, but there are still %d task pending. Ignoring them.\n", AsyncIO::Tasks.size());
             break;
         }
     }
