@@ -11,6 +11,7 @@ on:
       - '**.c'
       - '**.cmake'
       - '**.txt'
+      - '**.json'
       - '.github/workflows/build.yml'
   workflow_dispatch:
 
@@ -41,6 +42,8 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
+      - uses: lukka/get-cmake@latest
+
       - uses: actions/checkout@v4
         with:
           submodules: 'recursive'

@@ -1,13 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 enable_language(CXX C)
 
-# Require C++ 17
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-# Enable -fPIC flag
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
 # Enable IDE folders
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -21,15 +14,18 @@ if(APPLE)
     )
 endif()
 
-# Include extensions
-add_subdirectory(cmake)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-# Include garrysmod_common
-find_garrysmod_common()
-if(NOT GARRYSMOD_COMMON_FOUND) # Check if garrysmod_common has been found
-    message(FATAL_ERROR "garrysmod_common not found")
-endif()
+project(gm_asyncio VERSION 1.0.1 LANGUAGES CXX)
 
-project(gm_asyncio VERSION 1.0.0 LANGUAGES CXX)
+# Enable -fPIC flag
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+# Require C++ 17
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+find_package(GarrysmodCommon REQUIRED)
 
 add_subdirectory(source)
