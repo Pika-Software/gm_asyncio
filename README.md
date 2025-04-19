@@ -3,7 +3,7 @@ Make your Garry's Mod I/O asynchronous!
 
 
 > [!WARNING]  
-> Linux build crashes on main branch. #1
+> Linux build crashes on main branch. https://github.com/Pika-Software/gm_asyncio/issues/1
 
 ## Why?
 Garry's Mod still doesn't have `file.AsyncWrite` function,.
