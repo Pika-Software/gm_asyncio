@@ -1,6 +1,10 @@
 # gm_asyncio [![Build][1]][2]
 Make your Garry's Mod I/O asynchronous!
 
+
+> [!WARNING]  
+> Linux build crashes on main branch. #1
+
 ## Why?
 Garry's Mod still doesn't have `file.AsyncWrite` function,.
 Also `file.AsyncRead` also [doesn't work properly in menu state][3],
