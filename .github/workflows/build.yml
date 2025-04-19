@@ -23,7 +23,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-20.04]
+        os: [windows-latest, ubuntu-22.04]
         arch: [x64, x86]
         include:
           - os: windows-latest
@@ -32,7 +32,7 @@ jobs:
           - os: windows-latest
             arch: x86
             CMAKE_ARCH_FLAG: -A Win32
-          - os: ubuntu-20.04
+          - os: ubuntu-22.04
             arch: x86
             CMAKE_ARCH_FLAG: -DCMAKE_C_FLAGS="-m32" -DCMAKE_CXX_FLAGS="-m32"
           - os: macos-latest
@@ -46,7 +46,7 @@ jobs:
           submodules: 'recursive'
 
       - name: Install dependencies Ubuntu x86
-        if: ${{ matrix.os == 'ubuntu-20.04' && matrix.arch == 'x86' }}
+        if: ${{ matrix.os == 'ubuntu-22.04' && matrix.arch == 'x86' }}
         run: |
           sudo apt update
           sudo apt install gcc-multilib g++-multilib
@@ -72,7 +72,7 @@ jobs:
         run: cmake --build build -j -t ${{env.BUILD_TARGET}} --config ${{env.BUILD_TYPE}}
 
       - name: Strip debug information from binaries and keep them outside (Ubuntu)
-        if: ${{ matrix.os == 'ubuntu-20.04' }}
+        if: ${{ matrix.os == 'ubuntu-22.04' }}
         run: |
           find *.dll -exec objcopy --only-keep-debug {} {}.pdb \;
           find *.dll -exec objcopy --strip-debug {} \;
