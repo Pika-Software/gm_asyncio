@@ -68,7 +68,7 @@ number asyncio.AsyncRead( string fileName, string gamePath, function callback )
 local data = "Hello World!"
 
 local ok = asyncio.AsyncWrite("example.txt", data, function(fileName, gamePath, status)
-    local ok = asyncio.AsyncRead(filename, gamePath, function(fileName, gamePath, status, fileContent)
+    local ok = asyncio.AsyncRead(fileName, gamePath, function(fileName, gamePath, status, fileContent)
         print(status, status == FSASYNC_OK) -- 0 true
         print(fileContent) -- Hello World!
         print(data == fileContent) -- true

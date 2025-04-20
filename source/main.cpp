@@ -21,6 +21,7 @@ namespace AsyncIO {
             return false;
 
         Tasks.push_back(std::move(task));
+        return true;
     }
 }
 
