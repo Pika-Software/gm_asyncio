@@ -16,7 +16,7 @@ endif()
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-project(gm_asyncio VERSION 1.0.1 LANGUAGES CXX)
+project(gm_asyncio VERSION 1.0.3 LANGUAGES CXX)
 
 # Enable -fPIC flag
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
