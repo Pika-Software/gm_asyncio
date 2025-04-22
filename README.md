@@ -7,7 +7,7 @@ Also `file.AsyncRead` also [doesn't work properly in menu state][3],
 and Rubat doesn't want to elaborate in any way.
 
 Also [gm_async_write](https://github.com/WilliamVenner/gm_async_write) exists, 
-but it doesn't provide binaries for client-side and doesn't have binaries for MacOS.
+but it ~~doesn't provide binaries for client-side and~~ doesn't have binaries for MacOS.
 
 ## How to install?
 1. Go to [Releases][4] page
